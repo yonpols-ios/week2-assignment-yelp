@@ -7,16 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YelpFilters.h"
 
 @class FiltersViewController;
 
 @protocol FiltersViewControllerDelegate <NSObject>
 
-- (void) filtersViewController:(FiltersViewController *)filterViewController didChangeFilters:(NSDictionary *)filters;
+- (void) filtersViewController:(FiltersViewController *)filterViewController didChangeFilters:(YelpFilters *)filters;
 
 @end
 
 @interface FiltersViewController : UIViewController
+
+- (instancetype)initWithFilters:(YelpFilters *)filters;
 
 @property (nonatomic, weak) id<FiltersViewControllerDelegate> delegate;
 

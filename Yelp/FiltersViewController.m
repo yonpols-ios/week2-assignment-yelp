@@ -15,7 +15,6 @@
 
 @property (nonatomic, weak) IBOutlet UITableView *filtersTableView;
 
-@property (nonatomic, readonly) NSDictionary *filters;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *sortOptions;
 @property (nonatomic, strong) NSArray *distanceOptions;
@@ -27,9 +26,47 @@
 
 @property (nonatomic, assign) BOOL isSortOptionsOpen;
 @property (nonatomic, assign) BOOL isDistanceOptionsOpen;
+
 @end
 
 @implementation FiltersViewController
+
+- (instancetype) init {
+    if (self = [super init]) {
+        self.categories = yelpCategories();
+        self.sortOptions = yelpSortOptions();
+        self.distanceOptions = yelpDistanceOptions();
+        self.selectedCategories = [NSMutableSet set];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithFilters:(YelpFilters *)filters {
+    if (self = [self init]) {
+        self.sortBy = filters.sortMode;
+        
+        for (NSString *category in filters.categories) {
+            [self.selectedCategories addObject:category];
+        }
+        
+        if (filters.distance > 0) {
+            for (NSDictionary *option in self.distanceOptions) {
+                if ([option[@"value"] longValue] == filters.distance) {
+                    self.distanceFilter = option;
+                    break;
+                }
+            }
+        }
+        if (!self.distanceFilter) {
+            self.distanceFilter = self.distanceOptions[0];
+        }
+        
+        self.showDeals = filters.showDeals;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,15 +80,8 @@
     
     [self.filtersTableView registerNib:[UINib nibWithNibName:@"SwitchCell" bundle:nil] forCellReuseIdentifier:@"switchCell"];
     
-    self.categories = yelpCategories();
-    self.sortOptions = yelpSortOptions();
-    self.distanceOptions = yelpDistanceOptions();
     self.isSortOptionsOpen = NO;
-
-    self.selectedCategories = [NSMutableSet set];
-    self.sortBy = 0;
-    self.distanceFilter = self.distanceOptions[0];
-    self.showDeals = YES;
+    self.isDistanceOptionsOpen = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -175,7 +205,16 @@
 }
 
 - (void) onApplyButtonClicked {
-    [self.delegate filtersViewController:self didChangeFilters:self.filters];
+    YelpFilters *filters = [[YelpFilters alloc] init];
+    
+    filters.sortMode = (YelpSortMode) self.sortBy;
+    filters.categories = [self.selectedCategories allObjects];
+    if (self.distanceFilter != self.distanceOptions[0]) {
+        filters.distance = [self.distanceFilter[@"value"] longValue];
+    }
+    filters.showDeals = self.showDeals;
+
+    [self.delegate filtersViewController:self didChangeFilters:filters];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -235,6 +274,7 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForOthersSection:(NSIndexPath *)indexPath {
     SwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:@"switchCell"];
     switchCell.titleLabel.text = @"Show Deals";
+    switchCell.delegate = self;
     switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
     switchCell.on = self.showDeals;
 

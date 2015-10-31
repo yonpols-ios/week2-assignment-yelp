@@ -87,6 +87,20 @@
                                      completion:completion];
 }
 
++ (void)searchWithTerm:(NSString *)term
+               filters:(YelpFilters *)filters
+                offset:(long)offset
+            completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion {
+    
+    [[YelpClient sharedInstance] searchWithTerm:term
+                                       sortMode:filters.sortMode
+                                       distance:filters.distance
+                                     categories:filters.categories
+                                          deals:filters.showDeals
+                                         offset:offset
+                                     completion:completion];
+}
+
 - (NSString *)description {
     return [NSString stringWithFormat:@"\n\tName:%@\n\tAddress:%@\n\tImageUrl:%@\n\tCategories:%@\n\tDistance:%@\n\tRatingImageUrl:%@\n\tReviewCount:%@\n\t",
             self.name,

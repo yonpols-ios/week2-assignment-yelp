@@ -32,6 +32,7 @@
 		CD6B25CA1BE538B7005539D7 /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B25C81BE538B7005539D7 /* SwitchCell.m */; };
 		CD6B25CB1BE538B7005539D7 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD6B25C91BE538B7005539D7 /* SwitchCell.xib */; };
 		CD6B25CD1BE540C0005539D7 /* YelpConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B25CC1BE540C0005539D7 /* YelpConstants.m */; };
+		CD6B25D01BE561BE005539D7 /* YelpFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B25CF1BE561BE005539D7 /* YelpFilters.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,8 @@
 		CD6B25C91BE538B7005539D7 /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
 		CD6B25CC1BE540C0005539D7 /* YelpConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpConstants.m; sourceTree = "<group>"; };
 		CD6B25CE1BE5423A005539D7 /* YelpConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YelpConstants.h; sourceTree = "<group>"; };
+		CD6B25CF1BE561BE005539D7 /* YelpFilters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpFilters.m; sourceTree = "<group>"; };
+		CD6B25D11BE56344005539D7 /* YelpFilters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YelpFilters.h; sourceTree = "<group>"; };
 		FCA9D9EAA444BE83C105EDA0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +120,8 @@
 				11F304FE1BDC476D000ED8EF /* YelpBusiness.m */,
 				CD6B25CC1BE540C0005539D7 /* YelpConstants.m */,
 				CD6B25CE1BE5423A005539D7 /* YelpConstants.h */,
+				CD6B25CF1BE561BE005539D7 /* YelpFilters.m */,
+				CD6B25D11BE56344005539D7 /* YelpFilters.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -396,6 +401,7 @@
 				CD6B25C51BE52AEB005539D7 /* FiltersViewController.m in Sources */,
 				42FD6C5B18DC286B000BF2B9 /* AppDelegate.m in Sources */,
 				CD6B25CA1BE538B7005539D7 /* SwitchCell.m in Sources */,
+				CD6B25D01BE561BE005539D7 /* YelpFilters.m in Sources */,
 				CD6B25C01BE4715A005539D7 /* BusinessCell.m in Sources */,
 				CD6B25CD1BE540C0005539D7 /* YelpConstants.m in Sources */,
 				42FD6C5718DC286B000BF2B9 /* main.m in Sources */,

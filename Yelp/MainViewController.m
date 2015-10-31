@@ -12,10 +12,13 @@
 #import "FiltersViewController.h"
 
 @interface MainViewController () <UISearchBarDelegate, UITableViewDelegate, FiltersViewControllerDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *resultsTable;
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (strong, nonatomic) UISearchBar *searchBar;
 
 @property (strong, nonatomic) NSArray *businesses;
+@property (strong, nonatomic) YelpFilters *filters;
+@property (assign, nonatomic) long nextOffset;
 
 @end
 
@@ -24,10 +27,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    static NSString *defaultTerm = @"Restaurants";
+    
     self.searchBar = [[UISearchBar alloc] init];
     self.navigationItem.titleView = self.searchBar;
     self.searchBar.delegate = self;
-    self.searchBar.text = @"Restaurants";
+    self.searchBar.placeholder = defaultTerm;
     [self.searchBar sizeToFit];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonClicked)];
@@ -40,7 +45,8 @@
     UINib *cellNib = [UINib nibWithNibName:@"BusinessCell" bundle:nil];
     [self.resultsTable registerNib:cellNib forCellReuseIdentifier:@"businessCell"];
     
-    [self searchBarSearchButtonClicked:self.searchBar];
+    self.filters = [[YelpFilters alloc] init];
+    [self searchBusinesses:defaultTerm andFilters:nil offset:0];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,29 +67,38 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar endEditing:YES];
-
-    [YelpBusiness searchWithTerm:searchBar.text
-                        sortMode:YelpSortModeBestMatched
-                      categories:@[@"burgers"]
-                           deals:NO
-                      completion:^(NSArray *businesses, NSError *error) {
-                          if (!error) {
-                              self.businesses = businesses;
-                              [self.resultsTable reloadData];
-                          }
-                      }];
+    [self searchBusinesses:searchBar.text andFilters:self.filters offset:0];
 }
 
-- (void) filtersViewController:(FiltersViewController *)filterViewController didChangeFilters:(NSDictionary *)filters {
+- (void) filtersViewController:(FiltersViewController *)filterViewController didChangeFilters:(YelpFilters *)filters {
+    self.filters = filters;
+    NSString *searchTerm = self.searchBar.text;
+    if (searchTerm.length == 0) {
+        searchTerm = self.searchBar.placeholder;
+    }
     
+    [self searchBusinesses:searchTerm andFilters:self.filters offset:0];
 }
 
 - (void) filterButtonClicked {
-    FiltersViewController *vc = [[FiltersViewController alloc] init];
+    FiltersViewController *vc = [[FiltersViewController alloc] initWithFilters:self.filters];
     vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nvc animated:YES completion:nil];
 }
 
+- (void) searchBusinesses:(NSString *)searctTerm andFilters:(nullable YelpFilters *)filters offset:(long)offset {
+    [YelpBusiness searchWithTerm:searctTerm
+                         filters:filters
+                          offset:offset
+                      completion:^(NSArray *businesses, long nextOffset, NSError *error) {
+                          if (!error) {
+                              self.businesses = businesses;
+                              self.nextOffset = nextOffset;
+                              [self.resultsTable reloadData];
+                          }
+                      }];
+    
+}
 
 @end

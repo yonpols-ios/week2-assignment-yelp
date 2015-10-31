@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "YelpClient.h"
+#import "YelpFilters.h"
 
 @interface YelpBusiness : NSObject
 
@@ -31,5 +32,15 @@
             categories:(NSArray *)categories
                  deals:(BOOL)hasDeal
             completion:(void (^)(NSArray *businesses, NSError *error))completion;
+
++ (void)searchWithTerm:(NSString *)term
+               filters:(YelpFilters *)filters
+                  page:(long)page
+            completion:(void (^)(NSArray *businesses, NSError *error))completion;
+
++ (void)searchWithTerm:(NSString *)term
+               filters:(YelpFilters *)filters
+                offset:(long)offset
+            completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion;
 
 @end

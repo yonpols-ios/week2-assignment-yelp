@@ -55,6 +55,7 @@ NSString * const kYelpTokenSecret = @"yjAOS-PATgE24FgIWMm0ypl_HXg";
 
 - (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term
                                   sortMode:(YelpSortMode)sortMode
+                                  distance:(long)distance
                                 categories:(NSArray *)categories
                                      deals:(BOOL)hasDeal
                                 completion:(void (^)(NSArray *businesses, NSError *error))completion {
@@ -72,6 +73,11 @@ NSString * const kYelpTokenSecret = @"yjAOS-PATgE24FgIWMm0ypl_HXg";
     if (hasDeal) {
         parameters[@"deals_filter"] = [NSNumber numberWithBool:hasDeal];
     }
+
+    if (distance > 0) {
+        parameters[@"radius_filter"] = [NSNumber numberWithLong:distance];
+    }
+    
     
     NSLog(@"%@", parameters);
     
@@ -84,6 +90,54 @@ NSString * const kYelpTokenSecret = @"yjAOS-PATgE24FgIWMm0ypl_HXg";
                  
              } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
                  completion(nil, error);
+             }];
+}
+
+- (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term
+                                  sortMode:(YelpSortMode)sortMode
+                                  distance:(long)distance
+                                categories:(NSArray *)categories
+                                     deals:(BOOL)hasDeal
+                                    offset:(long)offset
+                                completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion {
+    
+    // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
+    NSMutableDictionary *parameters = [@{
+                                         @"offset": [NSNumber numberWithLong:offset],
+                                         @"term": term,
+                                         @"ll" : @"37.774866,-122.394556",
+                                         @"sort": [NSNumber numberWithInt:sortMode]}
+                                       mutableCopy];
+    
+    if (categories && categories.count > 0) {
+        parameters[@"category_filter"] = [categories componentsJoinedByString:@","];
+    }
+    
+    if (hasDeal) {
+        parameters[@"deals_filter"] = [NSNumber numberWithBool:hasDeal];
+    }
+    
+    if (distance > 0) {
+        parameters[@"radius_filter"] = [NSNumber numberWithLong:distance];
+    }
+    
+    
+    NSLog(@"%@", parameters);
+    
+    return [self GET:@"search"
+          parameters:parameters
+             success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+                 long nextOffset = 0;
+                 long total = [responseObject[@"total"] longValue];
+                 NSArray *businesses = responseObject[@"businesses"];
+                 
+                 if (offset + businesses.count < total) {
+                     nextOffset = offset + businesses.count;
+                 }
+
+                 completion([YelpBusiness businessesFromJsonArray:businesses], nextOffset, nil);
+             } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+                 completion(nil, 0, error);
              }];
 }
 
