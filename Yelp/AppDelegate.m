@@ -12,12 +12,13 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    MainViewController *mainViewController =[[MainViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    self.window.rootViewController = [[MainViewController alloc] init];
-    
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
+
     return YES;
 }
 
