@@ -1,15 +1,15 @@
 //
-//  BusinessTableViewCell.m
+//  BusinessCell.m
 //  Yelp
 //
 //  Created by Juan Pablo Marzetti on 10/30/15.
 //  Copyright © 2015 codepath. All rights reserved.
 //
 
-#import "BusinessTableViewCell.h"
+#import "BusinessCell.h"
 #import "UIImageView+AFNetworking.h"
 
-@interface BusinessTableViewCell ()
+@interface BusinessCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *businessImage;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation BusinessTableViewCell
+@implementation BusinessCell
 
 - (void)awakeFromNib {
     self.nameLabel.preferredMaxLayoutWidth = self.nameLabel.frame.size.width;

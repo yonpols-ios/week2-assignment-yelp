@@ -8,9 +8,10 @@
 
 #import "MainViewController.h"
 #import "YelpBusiness.h"
-#import "BusinessTableViewCell.h"
+#import "BusinessCell.h"
+#import "FiltersViewController.h"
 
-@interface MainViewController () <UISearchBarDelegate, UITableViewDelegate>
+@interface MainViewController () <UISearchBarDelegate, UITableViewDelegate, FiltersViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *resultsTable;
 @property (nonatomic, strong) UISearchBar *searchBar;
 
@@ -28,13 +29,15 @@
     self.searchBar.delegate = self;
     self.searchBar.text = @"Restaurants";
     [self.searchBar sizeToFit];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonClicked)];
 
     self.resultsTable.estimatedRowHeight = 100;
     self.resultsTable.rowHeight = UITableViewAutomaticDimension;
     self.resultsTable.delegate = self;
     self.resultsTable.dataSource = (id<UITableViewDataSource>) self;
     
-    UINib *cellNib = [UINib nibWithNibName:@"BusinessTableViewCell" bundle:nil];
+    UINib *cellNib = [UINib nibWithNibName:@"BusinessCell" bundle:nil];
     [self.resultsTable registerNib:cellNib forCellReuseIdentifier:@"businessCell"];
     
     [self searchBarSearchButtonClicked:self.searchBar];
@@ -50,7 +53,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    BusinessTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"businessCell"];
+    BusinessCell *cell = [tableView dequeueReusableCellWithIdentifier:@"businessCell"];
     cell.business = self.businesses[indexPath.row];
     
     return cell;
@@ -69,6 +72,17 @@
                               [self.resultsTable reloadData];
                           }
                       }];
+}
+
+- (void) filtersViewController:(FiltersViewController *)filterViewController didChangeFilters:(NSDictionary *)filters {
+    
+}
+
+- (void) filterButtonClicked {
+    FiltersViewController *vc = [[FiltersViewController alloc] init];
+    vc.delegate = self;
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nvc animated:YES completion:nil];
 }
 
 
