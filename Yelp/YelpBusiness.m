@@ -69,25 +69,6 @@
 }
 
 + (void)searchWithTerm:(NSString *)term
-            completion:(void (^)(NSArray *businesses, NSError *error))completion {
-
-    [[YelpClient sharedInstance] searchWithTerm:term completion:completion];
-}
-
-+ (void)searchWithTerm:(NSString *)term
-              sortMode:(YelpSortMode)sortMode
-            categories:(NSArray *)categories
-                 deals:(BOOL)hasDeal
-            completion:(void (^)(NSArray *businesses, NSError *error))completion {
-
-    [[YelpClient sharedInstance] searchWithTerm:term
-                                       sortMode:sortMode
-                                     categories:categories
-                                          deals:hasDeal
-                                     completion:completion];
-}
-
-+ (void)searchWithTerm:(NSString *)term
                filters:(YelpFilters *)filters
                 offset:(long)offset
             completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion {

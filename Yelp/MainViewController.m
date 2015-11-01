@@ -17,6 +17,8 @@
 @property (strong, nonatomic) UISearchBar *searchBar;
 
 @property (strong, nonatomic) NSArray *businesses;
+
+@property (strong, nonatomic) NSString *searchTerm;
 @property (strong, nonatomic) YelpFilters *filters;
 @property (assign, nonatomic) long nextOffset;
 
@@ -46,13 +48,15 @@
     [self.resultsTable registerNib:cellNib forCellReuseIdentifier:@"businessCell"];
     
     self.filters = [[YelpFilters alloc] init];
-    [self searchBusinesses:defaultTerm andFilters:nil offset:0];
+    self.searchTerm = defaultTerm;
+    [self searchBusinesses:self.searchTerm andFilters:self.filters offset:0];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark delegates
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.businesses.count;
@@ -62,23 +66,32 @@
     BusinessCell *cell = [tableView dequeueReusableCellWithIdentifier:@"businessCell"];
     cell.business = self.businesses[indexPath.row];
     
+    if (self.nextOffset > 0 && indexPath.row == (self.businesses.count - 1)) {
+        UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
+        UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [loadingView startAnimating];
+        loadingView.center = tableFooterView.center;
+        [tableFooterView addSubview:loadingView];
+        tableView.tableFooterView = tableFooterView;
+
+        [self searchBusinesses:self.searchTerm andFilters:self.filters offset:self.nextOffset];
+    }
+    
     return cell;
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar endEditing:YES];
-    [self searchBusinesses:searchBar.text andFilters:self.filters offset:0];
+    self.searchTerm = self.searchBar.text;
+    [self searchBusinesses:self.searchTerm andFilters:self.filters offset:0];
 }
 
 - (void) filtersViewController:(FiltersViewController *)filterViewController didChangeFilters:(YelpFilters *)filters {
     self.filters = filters;
-    NSString *searchTerm = self.searchBar.text;
-    if (searchTerm.length == 0) {
-        searchTerm = self.searchBar.placeholder;
-    }
-    
-    [self searchBusinesses:searchTerm andFilters:self.filters offset:0];
+    [self searchBusinesses:self.searchTerm andFilters:self.filters offset:0];
 }
+
+#pragma mark events
 
 - (void) filterButtonClicked {
     FiltersViewController *vc = [[FiltersViewController alloc] initWithFilters:self.filters];
@@ -87,13 +100,26 @@
     [self presentViewController:nvc animated:YES completion:nil];
 }
 
+#pragma mark private methods
+
 - (void) searchBusinesses:(NSString *)searctTerm andFilters:(nullable YelpFilters *)filters offset:(long)offset {
-    [YelpBusiness searchWithTerm:searctTerm
+    NSString *controlledSearchTerm = searctTerm;
+    if (controlledSearchTerm.length == 0) {
+        controlledSearchTerm = @"Restaurants";
+    }
+
+    [YelpBusiness searchWithTerm:controlledSearchTerm
                          filters:filters
                           offset:offset
                       completion:^(NSArray *businesses, long nextOffset, NSError *error) {
                           if (!error) {
-                              self.businesses = businesses;
+                              
+                              if (offset > 0) {
+                                  self.businesses = [self.businesses arrayByAddingObjectsFromArray:businesses];
+                                  self.resultsTable.tableFooterView = nil;
+                              } else {
+                                  self.businesses = businesses;
+                              }
                               self.nextOffset = nextOffset;
                               [self.resultsTable reloadData];
                           }

@@ -44,56 +44,6 @@ NSString * const kYelpTokenSecret = @"yjAOS-PATgE24FgIWMm0ypl_HXg";
 }
 
 - (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term
-                                completion:(void (^)(NSArray *businesses, NSError *error))completion {
-    
-    return [self searchWithTerm:term
-                       sortMode:YelpSortModeBestMatched
-                     categories:nil
-                          deals:NO
-                     completion:completion];
-}
-
-- (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term
-                                  sortMode:(YelpSortMode)sortMode
-                                  distance:(long)distance
-                                categories:(NSArray *)categories
-                                     deals:(BOOL)hasDeal
-                                completion:(void (^)(NSArray *businesses, NSError *error))completion {
-    
-    // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
-    NSMutableDictionary *parameters = [@{@"term": term,
-                                         @"ll" : @"37.774866,-122.394556",
-                                         @"sort": [NSNumber numberWithInt:sortMode]}
-                                       mutableCopy];
-    
-    if (categories && categories.count > 0) {
-        parameters[@"category_filter"] = [categories componentsJoinedByString:@","];
-    }
-    
-    if (hasDeal) {
-        parameters[@"deals_filter"] = [NSNumber numberWithBool:hasDeal];
-    }
-
-    if (distance > 0) {
-        parameters[@"radius_filter"] = [NSNumber numberWithLong:distance];
-    }
-    
-    
-    NSLog(@"%@", parameters);
-    
-    return [self GET:@"search"
-          parameters:parameters
-             success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-                 
-                 NSArray *businesses = responseObject[@"businesses"];
-                 completion([YelpBusiness businessesFromJsonArray:businesses], nil);
-                 
-             } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-                 completion(nil, error);
-             }];
-}
-
-- (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term
                                   sortMode:(YelpSortMode)sortMode
                                   distance:(long)distance
                                 categories:(NSArray *)categories
@@ -134,9 +84,14 @@ NSString * const kYelpTokenSecret = @"yjAOS-PATgE24FgIWMm0ypl_HXg";
                  if (offset + businesses.count < total) {
                      nextOffset = offset + businesses.count;
                  }
+                 NSLog(@"total: %ld", total);
 
                  completion([YelpBusiness businessesFromJsonArray:businesses], nextOffset, nil);
              } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+                 NSString* ErrorResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+                 NSLog(@"%@",ErrorResponse);
+                 
+                 
                  completion(nil, 0, error);
              }];
 }
