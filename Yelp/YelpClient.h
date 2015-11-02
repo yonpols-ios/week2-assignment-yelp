@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 #import "BDBOAuth1RequestOperationManager.h"
 
 @interface YelpClient : BDBOAuth1RequestOperationManager
@@ -25,6 +26,7 @@ typedef NS_ENUM(NSInteger, YelpSortMode) {
                                 categories:(NSArray *)categories
                                      deals:(BOOL)hasDeal
                                     offset:(long)offset
+                                  location:(CLLocation *)location
                                 completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion;
 
 @end

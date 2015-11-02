@@ -42,6 +42,7 @@
 
 - (void) setOn:(BOOL)on animated:(BOOL)animated {
     _on = on;
+    self.valueSwitch.thumbImage = [UIImage imageNamed:(on ? @"yelp-on" : @"yelp-off")];
     [self.valueSwitch setOn:on animated:animated];
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "YelpClient.h"
 #import "YelpFilters.h"
 
@@ -27,6 +28,7 @@
 + (void)searchWithTerm:(NSString *)term
                filters:(YelpFilters *)filters
                 offset:(long)offset
+              location:(CLLocation *)location
             completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion;
 
 @end

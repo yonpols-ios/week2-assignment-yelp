@@ -6,15 +6,18 @@
 //  Copyright (c) 2014 codepath. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import "MainViewController.h"
 #import "YelpBusiness.h"
 #import "BusinessCell.h"
 #import "FiltersViewController.h"
 
-@interface MainViewController () <UISearchBarDelegate, UITableViewDelegate, FiltersViewControllerDelegate>
+@interface MainViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UITableViewDelegate, FiltersViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *resultsTable;
 @property (strong, nonatomic) UISearchBar *searchBar;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLLocation *currentLocation;
 
 @property (strong, nonatomic) NSArray *businesses;
 
@@ -50,6 +53,14 @@
     self.filters = [[YelpFilters alloc] init];
     self.searchTerm = defaultTerm;
     [self searchBusinesses:self.searchTerm andFilters:self.filters offset:0];
+    
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    [self.locationManager startUpdatingLocation];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -91,6 +102,11 @@
     [self searchBusinesses:self.searchTerm andFilters:self.filters offset:0];
 }
 
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    self.currentLocation = newLocation;
+}
+
 #pragma mark events
 
 - (void) filterButtonClicked {
@@ -111,6 +127,7 @@
     [YelpBusiness searchWithTerm:controlledSearchTerm
                          filters:filters
                           offset:offset
+                        location:self.currentLocation
                       completion:^(NSArray *businesses, long nextOffset, NSError *error) {
                           if (!error) {
                               

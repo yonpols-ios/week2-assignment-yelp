@@ -71,6 +71,7 @@
 + (void)searchWithTerm:(NSString *)term
                filters:(YelpFilters *)filters
                 offset:(long)offset
+              location:(CLLocation *)location
             completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion {
     
     [[YelpClient sharedInstance] searchWithTerm:term
@@ -79,6 +80,7 @@
                                      categories:filters.categories
                                           deals:filters.showDeals
                                          offset:offset
+                                       location:location
                                      completion:completion];
 }
 

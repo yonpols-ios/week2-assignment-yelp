@@ -49,16 +49,22 @@ NSString * const kYelpTokenSecret = @"yjAOS-PATgE24FgIWMm0ypl_HXg";
                                 categories:(NSArray *)categories
                                      deals:(BOOL)hasDeal
                                     offset:(long)offset
+                                  location:(CLLocation *)location
                                 completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion {
     
     // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
     NSMutableDictionary *parameters = [@{
                                          @"offset": [NSNumber numberWithLong:offset],
                                          @"term": term,
-                                         @"ll" : @"37.774866,-122.394556",
                                          @"sort": [NSNumber numberWithInt:sortMode]}
                                        mutableCopy];
-    
+
+    if (location) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%2.6f,%2.6f", location.coordinate.latitude, location.coordinate.longitude];
+    } else {
+        parameters[@"ll"] = @"37.774866,-122.394556";
+    }
+
     if (categories && categories.count > 0) {
         parameters[@"category_filter"] = [categories componentsJoinedByString:@","];
     }
