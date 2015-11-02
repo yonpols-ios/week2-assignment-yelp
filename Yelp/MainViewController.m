@@ -28,6 +28,11 @@
 @property (strong, nonatomic) YelpFilters *filters;
 @property (assign, nonatomic) long nextOffset;
 
+@property (strong, nonatomic) UIImage *filterImage;
+@property (strong, nonatomic) UIImage *mapImage;
+@property (strong, nonatomic) UIImage *listImage;
+
+
 @end
 
 @implementation MainViewController
@@ -43,8 +48,13 @@
     self.searchBar.placeholder = defaultTerm;
     [self.searchBar sizeToFit];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonClicked)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Map" style:UIBarButtonItemStylePlain target:self action:@selector(mapListButtonClicked)];
+
+    self.filterImage = [[UIImage imageNamed:@"filter"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.mapImage = [[UIImage imageNamed:@"map"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.listImage = [[UIImage imageNamed:@"list"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:self.filterImage landscapeImagePhone:nil style:UIBarButtonItemStyleDone target:self action:@selector(filterButtonClicked)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:self.mapImage landscapeImagePhone:nil style:UIBarButtonItemStyleDone target:self action:@selector(mapListButtonClicked)];
 
     self.resultsTable.estimatedRowHeight = 100;
     self.resultsTable.rowHeight = UITableViewAutomaticDimension;
@@ -124,23 +134,23 @@
 
 - (void) mapListButtonClicked {
     if (self.resultsMap.hidden) {
+        self.navigationItem.rightBarButtonItem.image = self.listImage;
         [UIView transitionFromView:self.resultsTable
                             toView:self.resultsMap
                           duration:0.5
                            options:UIViewAnimationOptionTransitionFlipFromLeft | UIViewAnimationOptionShowHideTransitionViews
                         completion:^(BOOL finished) {
                             if (finished) {
-                                self.navigationItem.rightBarButtonItem.title = @"List";
                             }
                         }];
     } else {
+        self.navigationItem.rightBarButtonItem.image = self.mapImage;
         [UIView transitionFromView:self.resultsMap
                             toView:self.resultsTable
                           duration:0.5
                            options:UIViewAnimationOptionTransitionFlipFromLeft | UIViewAnimationOptionShowHideTransitionViews
                         completion:^(BOOL finished) {
                             if (finished) {
-                                self.navigationItem.rightBarButtonItem.title = @"Map";
                             }
                         }];
     }

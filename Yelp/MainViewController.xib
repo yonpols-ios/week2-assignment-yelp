@@ -53,6 +53,7 @@
                 <constraint firstAttribute="bottom" secondItem="KmZ-MT-E5O" secondAttribute="bottom" id="ljV-qj-f2w"/>
                 <constraint firstItem="KmZ-MT-E5O" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="v1r-MS-xiQ"/>
             </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
         </view>
     </objects>
 </document>
