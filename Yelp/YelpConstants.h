@@ -9,6 +9,7 @@
 #ifndef YelpConstants_h
 #define YelpConstants_h
 
+NSArray *yelpSelectedCategories();
 NSArray *yelpCategories();
 NSArray *yelpSortOptions();
 NSArray *yelpDistanceOptions();

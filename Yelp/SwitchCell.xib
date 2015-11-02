@@ -15,14 +15,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings Switch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a18-ff-Z8t">
-                        <rect key="frame" x="8" y="8" width="119.5" height="30.5"/>
+                        <rect key="frame" x="16" y="8" width="119.5" height="30.5"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jrb-RL-SxS">
-                        <rect key="frame" x="263" y="8" width="51" height="31"/>
+                        <rect key="frame" x="255" y="8" width="51" height="31"/>
                         <animations/>
                         <connections>
                             <action selector="valueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="z2v-Gv-gE4"/>
@@ -32,9 +32,9 @@
                 <animations/>
                 <constraints>
                     <constraint firstItem="a18-ff-Z8t" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="4N0-R5-4D0"/>
-                    <constraint firstAttribute="trailing" secondItem="Jrb-RL-SxS" secondAttribute="trailing" constant="8" id="Ap8-BT-4C4"/>
+                    <constraint firstAttribute="trailing" secondItem="Jrb-RL-SxS" secondAttribute="trailing" constant="16" id="Ap8-BT-4C4"/>
                     <constraint firstAttribute="bottom" secondItem="a18-ff-Z8t" secondAttribute="bottom" constant="8" id="Hhl-Rn-IsT"/>
-                    <constraint firstItem="a18-ff-Z8t" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="K8U-be-27u"/>
+                    <constraint firstItem="a18-ff-Z8t" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="K8U-be-27u"/>
                     <constraint firstItem="Jrb-RL-SxS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="blc-PZ-KfB"/>
                     <constraint firstAttribute="bottom" secondItem="Jrb-RL-SxS" secondAttribute="bottom" constant="8" id="v7J-O8-eMK"/>
                 </constraints>

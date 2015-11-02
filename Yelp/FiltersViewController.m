@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSDictionary *distanceFilter;
 @property (nonatomic, assign) BOOL showDeals;
 
+@property (nonatomic, assign) BOOL isCategoriesExtended;
 @property (nonatomic, assign) BOOL isSortOptionsOpen;
 @property (nonatomic, assign) BOOL isDistanceOptionsOpen;
 
@@ -33,7 +34,7 @@
 
 - (instancetype) init {
     if (self = [super init]) {
-        self.categories = yelpCategories();
+        self.categories = yelpSelectedCategories();
         self.sortOptions = yelpSortOptions();
         self.distanceOptions = yelpDistanceOptions();
         self.selectedCategories = [NSMutableSet set];
@@ -82,6 +83,7 @@
     
     self.isSortOptionsOpen = NO;
     self.isDistanceOptionsOpen = NO;
+    self.isCategoriesExtended = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,7 +96,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return self.categories.count;
+            return self.categories.count + 1;
         case 1:
             if (self.isSortOptionsOpen) {
                 return self.sortOptions.count;
@@ -157,6 +159,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.section) {
+        case 0:
+            if (self.isCategoriesExtended) {
+                self.categories = yelpSelectedCategories();
+                self.isCategoriesExtended = NO;
+            } else {
+                self.categories = yelpCategories();
+                self.isCategoriesExtended = YES;
+            }
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
         case 1:
             if (self.isSortOptionsOpen) {
                 self.sortBy = indexPath.row;
@@ -221,13 +234,26 @@
 #pragma mark private methods
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForCategoriesSection:(NSIndexPath *)indexPath {
-    SwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:@"switchCell"];
-    switchCell.titleLabel.text = self.categories[indexPath.row][@"name"];
-    switchCell.delegate = self;
-    switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    switchCell.on = [self.selectedCategories containsObject:self.categories[indexPath.row][@"code"]];
-    
-    return switchCell;
+    if (indexPath.row == self.categories.count) {
+        UITableViewCell *cell = [self dequeueBasicCellForTableView:tableView];
+        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (self.isCategoriesExtended) {
+            cell.textLabel.text = @"Show Less...";
+        } else {
+            cell.textLabel.text = @"Show More...";
+        }
+        
+        return cell;
+    } else {
+        SwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:@"switchCell"];
+        switchCell.titleLabel.text = self.categories[indexPath.row][@"name"];
+        switchCell.delegate = self;
+        switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        switchCell.on = [self.selectedCategories containsObject:self.categories[indexPath.row][@"code"]];
+        
+        return switchCell;
+    }
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForSortOptionsSection:(NSIndexPath *)indexPath {
