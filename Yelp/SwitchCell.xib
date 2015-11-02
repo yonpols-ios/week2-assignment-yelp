@@ -21,29 +21,32 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jrb-RL-SxS">
-                        <rect key="frame" x="255" y="8" width="51" height="31"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Kc-sd-x8Q">
+                        <rect key="frame" x="252" y="8" width="60" height="31"/>
                         <animations/>
-                        <connections>
-                            <action selector="valueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="z2v-Gv-gE4"/>
-                        </connections>
-                    </switch>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="SIe-Ye-MiF"/>
+                            <constraint firstAttribute="height" constant="31" id="d00-Gi-lcv"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <animations/>
                 <constraints>
                     <constraint firstItem="a18-ff-Z8t" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="4N0-R5-4D0"/>
-                    <constraint firstAttribute="trailing" secondItem="Jrb-RL-SxS" secondAttribute="trailing" constant="16" id="Ap8-BT-4C4"/>
                     <constraint firstAttribute="bottom" secondItem="a18-ff-Z8t" secondAttribute="bottom" constant="8" id="Hhl-Rn-IsT"/>
                     <constraint firstItem="a18-ff-Z8t" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="K8U-be-27u"/>
-                    <constraint firstItem="Jrb-RL-SxS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="blc-PZ-KfB"/>
-                    <constraint firstAttribute="bottom" secondItem="Jrb-RL-SxS" secondAttribute="bottom" constant="8" id="v7J-O8-eMK"/>
+                    <constraint firstAttribute="trailing" secondItem="6Kc-sd-x8Q" secondAttribute="trailing" constant="8" id="dFe-Qy-aCE"/>
+                    <constraint firstAttribute="bottom" secondItem="6Kc-sd-x8Q" secondAttribute="bottom" constant="8" id="t2S-uO-cEx"/>
+                    <constraint firstItem="6Kc-sd-x8Q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="a18-ff-Z8t" secondAttribute="trailing" constant="8" id="uJr-M0-G6e"/>
+                    <constraint firstItem="6Kc-sd-x8Q" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="uNv-ru-ekt"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
             <connections>
+                <outlet property="switchContainerView" destination="6Kc-sd-x8Q" id="n47-Lq-ay2"/>
                 <outlet property="textLabel" destination="a18-ff-Z8t" id="UVY-u3-wKV"/>
                 <outlet property="titleLabel" destination="a18-ff-Z8t" id="ZTT-di-wLa"/>
-                <outlet property="valueSwitch" destination="Jrb-RL-SxS" id="eMH-1A-3LJ"/>
             </connections>
             <point key="canvasLocation" x="467" y="391.5"/>
         </tableViewCell>
