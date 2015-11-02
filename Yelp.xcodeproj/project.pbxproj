@@ -34,6 +34,7 @@
 		CD6B25CD1BE540C0005539D7 /* YelpConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B25CC1BE540C0005539D7 /* YelpConstants.m */; };
 		CD6B25D01BE561BE005539D7 /* YelpFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B25CF1BE561BE005539D7 /* YelpFilters.m */; };
 		CD6B25D71BE74B6B005539D7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6B25D61BE74B6B005539D7 /* CoreLocation.framework */; };
+		CD6B25DB1BE7EA8E005539D7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6B25DA1BE7EA8E005539D7 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		CD6B25CF1BE561BE005539D7 /* YelpFilters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpFilters.m; sourceTree = "<group>"; };
 		CD6B25D11BE56344005539D7 /* YelpFilters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YelpFilters.h; sourceTree = "<group>"; };
 		CD6B25D61BE74B6B005539D7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CD6B25DA1BE7EA8E005539D7 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		FCA9D9EAA444BE83C105EDA0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD6B25DB1BE7EA8E005539D7 /* MapKit.framework in Frameworks */,
 				CD6B25D71BE74B6B005539D7 /* CoreLocation.framework in Frameworks */,
 				42FD6C4D18DC286B000BF2B9 /* CoreGraphics.framework in Frameworks */,
 				42FD6C4F18DC286B000BF2B9 /* UIKit.framework in Frameworks */,
@@ -174,6 +177,7 @@
 		42FD6C4918DC286B000BF2B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD6B25DA1BE7EA8E005539D7 /* MapKit.framework */,
 				CD6B25D61BE74B6B005539D7 /* CoreLocation.framework */,
 				42FD6C4A18DC286B000BF2B9 /* Foundation.framework */,
 				42FD6C4C18DC286B000BF2B9 /* CoreGraphics.framework */,

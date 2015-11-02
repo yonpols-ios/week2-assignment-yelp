@@ -55,6 +55,9 @@
         _ratingImageUrl = ratingImageUrlString ? [NSURL URLWithString:ratingImageUrlString] : nil;
 
         _reviewCount = dict[@"review_count"];
+        
+        _latitude = dict[@"location"][@"coordinate"][@"latitude"];
+        _longitude = dict[@"location"][@"coordinate"][@"longitude"];
     }
     return self;
 }
@@ -72,7 +75,7 @@
                filters:(YelpFilters *)filters
                 offset:(long)offset
               location:(CLLocation *)location
-            completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion {
+            completion:(void (^)(NSArray *businesses, NSDictionary *region, long nextOffset, NSError *error))completion {
     
     [[YelpClient sharedInstance] searchWithTerm:term
                                        sortMode:filters.sortMode

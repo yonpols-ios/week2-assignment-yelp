@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController">
             <connections>
+                <outlet property="containerView" destination="KmZ-MT-E5O" id="VLx-cC-uTx"/>
+                <outlet property="resultsMap" destination="wfF-Oa-2Id" id="x1p-Ff-5IC"/>
                 <outlet property="resultsTable" destination="IiA-Dp-U3L" id="ER4-Vx-9lv"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -16,19 +18,40 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IiA-Dp-U3L">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KmZ-MT-E5O">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IiA-Dp-U3L">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </tableView>
+                        <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wfF-Oa-2Id">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <animations/>
+                        </mapView>
+                    </subviews>
                     <animations/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </tableView>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="wfF-Oa-2Id" secondAttribute="trailing" id="28L-e8-tvZ"/>
+                        <constraint firstAttribute="trailing" secondItem="IiA-Dp-U3L" secondAttribute="trailing" id="68X-jc-hEu"/>
+                        <constraint firstItem="IiA-Dp-U3L" firstAttribute="top" secondItem="KmZ-MT-E5O" secondAttribute="top" id="6P0-1c-Meh"/>
+                        <constraint firstAttribute="bottom" secondItem="IiA-Dp-U3L" secondAttribute="bottom" id="Cda-ki-Waa"/>
+                        <constraint firstItem="IiA-Dp-U3L" firstAttribute="leading" secondItem="KmZ-MT-E5O" secondAttribute="leading" id="QCv-kt-g1F"/>
+                        <constraint firstItem="wfF-Oa-2Id" firstAttribute="leading" secondItem="KmZ-MT-E5O" secondAttribute="leading" id="fej-k4-Kd0"/>
+                        <constraint firstAttribute="bottom" secondItem="wfF-Oa-2Id" secondAttribute="bottom" id="j6h-me-zL9"/>
+                        <constraint firstItem="wfF-Oa-2Id" firstAttribute="top" secondItem="KmZ-MT-E5O" secondAttribute="top" id="raL-Oo-lH9"/>
+                    </constraints>
+                </view>
             </subviews>
             <animations/>
-            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="IiA-Dp-U3L" secondAttribute="bottom" id="TXn-T8-gYr"/>
-                <constraint firstAttribute="trailing" secondItem="IiA-Dp-U3L" secondAttribute="trailing" id="UGS-Db-MBJ"/>
-                <constraint firstItem="IiA-Dp-U3L" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="cxC-YK-Xsq"/>
-                <constraint firstItem="IiA-Dp-U3L" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="eU8-zk-P4p"/>
+                <constraint firstItem="KmZ-MT-E5O" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="CQ2-bz-TfJ"/>
+                <constraint firstAttribute="trailing" secondItem="KmZ-MT-E5O" secondAttribute="trailing" id="aQN-iG-n0v"/>
+                <constraint firstAttribute="bottom" secondItem="KmZ-MT-E5O" secondAttribute="bottom" id="ljV-qj-f2w"/>
+                <constraint firstItem="KmZ-MT-E5O" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="v1r-MS-xiQ"/>
             </constraints>
         </view>
     </objects>

@@ -20,6 +20,8 @@
 @property (strong, nonatomic) NSString *distance;
 @property (strong, nonatomic) NSURL *ratingImageUrl;
 @property (strong, nonatomic) NSNumber *reviewCount;
+@property (strong, nonatomic) NSNumber *latitude;
+@property (strong, nonatomic) NSNumber *longitude;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
 
@@ -29,6 +31,6 @@
                filters:(YelpFilters *)filters
                 offset:(long)offset
               location:(CLLocation *)location
-            completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion;
+            completion:(void (^)(NSArray *businesses, NSDictionary *region, long nextOffset, NSError *error))completion;
 
 @end

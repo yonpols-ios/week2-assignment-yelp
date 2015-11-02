@@ -50,7 +50,7 @@ NSString * const kYelpTokenSecret = @"yjAOS-PATgE24FgIWMm0ypl_HXg";
                                      deals:(BOOL)hasDeal
                                     offset:(long)offset
                                   location:(CLLocation *)location
-                                completion:(void (^)(NSArray *businesses, long nextOffset, NSError *error))completion {
+                                completion:(void (^)(NSArray *businesses, NSDictionary *region, long nextOffset, NSError *error))completion {
     
     // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
     NSMutableDictionary *parameters = [@{
@@ -86,19 +86,20 @@ NSString * const kYelpTokenSecret = @"yjAOS-PATgE24FgIWMm0ypl_HXg";
                  long nextOffset = 0;
                  long total = [responseObject[@"total"] longValue];
                  NSArray *businesses = responseObject[@"businesses"];
+                 NSDictionary *region = responseObject[@"region"];
                  
                  if (offset + businesses.count < total) {
                      nextOffset = offset + businesses.count;
                  }
                  NSLog(@"total: %ld", total);
 
-                 completion([YelpBusiness businessesFromJsonArray:businesses], nextOffset, nil);
+                 completion([YelpBusiness businessesFromJsonArray:businesses], region, nextOffset, nil);
              } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
                  NSString* ErrorResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
                  NSLog(@"%@",ErrorResponse);
                  
                  
-                 completion(nil, 0, error);
+                 completion(nil, nil, 0, error);
              }];
 }
 

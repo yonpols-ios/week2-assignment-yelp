@@ -7,14 +7,17 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 #import "MainViewController.h"
 #import "YelpBusiness.h"
 #import "BusinessCell.h"
 #import "FiltersViewController.h"
 
-@interface MainViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UITableViewDelegate, FiltersViewControllerDelegate>
+@interface MainViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UITableViewDelegate, MKMapViewDelegate, FiltersViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UITableView *resultsTable;
+@property (weak, nonatomic) IBOutlet MKMapView *resultsMap;
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *currentLocation;
@@ -41,6 +44,7 @@
     [self.searchBar sizeToFit];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonClicked)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Map" style:UIBarButtonItemStylePlain target:self action:@selector(mapListButtonClicked)];
 
     self.resultsTable.estimatedRowHeight = 100;
     self.resultsTable.rowHeight = UITableViewAutomaticDimension;
@@ -49,6 +53,8 @@
     
     UINib *cellNib = [UINib nibWithNibName:@"BusinessCell" bundle:nil];
     [self.resultsTable registerNib:cellNib forCellReuseIdentifier:@"businessCell"];
+    
+    self.resultsMap.delegate = self;
     
     self.filters = [[YelpFilters alloc] init];
     self.searchTerm = defaultTerm;
@@ -116,7 +122,53 @@
     [self presentViewController:nvc animated:YES completion:nil];
 }
 
+- (void) mapListButtonClicked {
+    if (self.resultsMap.hidden) {
+        [UIView transitionFromView:self.resultsTable
+                            toView:self.resultsMap
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionFlipFromLeft | UIViewAnimationOptionShowHideTransitionViews
+                        completion:^(BOOL finished) {
+                            if (finished) {
+                                self.navigationItem.rightBarButtonItem.title = @"List";
+                            }
+                        }];
+    } else {
+        [UIView transitionFromView:self.resultsMap
+                            toView:self.resultsTable
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionFlipFromLeft | UIViewAnimationOptionShowHideTransitionViews
+                        completion:^(BOOL finished) {
+                            if (finished) {
+                                self.navigationItem.rightBarButtonItem.title = @"Map";
+                            }
+                        }];
+    }
+}
+
 #pragma mark private methods
+
+- (void) reloadMapData:(NSDictionary *)region {
+    CLLocationCoordinate2D center = CLLocationCoordinate2DMake([region[@"center"][@"latitude"] doubleValue], [region[@"center"][@"longitude"] doubleValue]);
+    MKCoordinateSpan span = MKCoordinateSpanMake([region[@"span"][@"latitude_delta"] doubleValue], [region[@"span"][@"longitude_delta"] doubleValue]);
+    MKCoordinateRegion coordinateRegion = MKCoordinateRegionMake(center, span);
+    [self.resultsMap removeAnnotations:self.resultsMap.annotations];
+    
+    MKUserLocation *userLocation = self.resultsMap.userLocation;
+    
+    for (YelpBusiness *business in self.businesses) {
+        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        annotation.coordinate = CLLocationCoordinate2DMake([business.latitude doubleValue], [business.longitude doubleValue]);
+        annotation.title = business.name;
+        annotation.subtitle = business.address;
+        [self.resultsMap addAnnotation:annotation];
+    }
+
+    [self.resultsMap addAnnotation:userLocation];
+
+    [self.resultsMap setRegion:coordinateRegion animated:YES];
+    [self.resultsMap regionThatFits:coordinateRegion];
+}
 
 - (void) searchBusinesses:(NSString *)searctTerm andFilters:(nullable YelpFilters *)filters offset:(long)offset {
     NSString *controlledSearchTerm = searctTerm;
@@ -128,7 +180,7 @@
                          filters:filters
                           offset:offset
                         location:self.currentLocation
-                      completion:^(NSArray *businesses, long nextOffset, NSError *error) {
+                      completion:^(NSArray *businesses, NSDictionary *region, long nextOffset, NSError *error) {
                           if (!error) {
                               
                               if (offset > 0) {
@@ -139,6 +191,7 @@
                               }
                               self.nextOffset = nextOffset;
                               [self.resultsTable reloadData];
+                              [self reloadMapData:region];
                           }
                       }];
     
