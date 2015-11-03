@@ -160,14 +160,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.section) {
         case 0:
-            if (self.isCategoriesExtended) {
-                self.categories = yelpSelectedCategories();
-                self.isCategoriesExtended = NO;
-            } else {
-                self.categories = yelpCategories();
-                self.isCategoriesExtended = YES;
+            if (indexPath.row == self.categories.count) {
+                if (self.isCategoriesExtended) {
+                    self.categories = yelpSelectedCategories();
+                    self.isCategoriesExtended = NO;
+                } else {
+                    self.categories = yelpCategories();
+                    self.isCategoriesExtended = YES;
+                }
+                [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
             }
-            [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case 1:

@@ -32,23 +32,29 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] Getting user location to search
+- [x] Flipping animation to switch between map and list
+- [x] Custom NavBar icons
+
+The following **additional** features could implemented:
+
+- [ ] Better map pins and information
+- [ ] Better interactions with the search bar
+- [ ] Better handling of categories. Currently I'm only supporting Restaurant subcategories.
+- [ ] Loading HUD
+- [ ] Defer loading until first location information is available instead of using SF's default location
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src="assignment2.gif" title="Video Walkthrough" alt="Video Walkthrough" />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-## Notes
-
-Describe any challenges encountered while building the app.
-
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright 2015 Juan Pablo Marzetti
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
